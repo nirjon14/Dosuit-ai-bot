@@ -16,11 +16,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # ✅ /menu ফাংশন
 async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await send_page(update, 1)
+    await send_page(update, context, 1)
 
 # ✅ পেজ ভিত্তিক সার্ভিস মেনু
-async def send_page(update, page):
-    if isinstance(update, Update) and update.callback_query:
+async def send_page(update, context, page):
+    if update.callback_query:
         query = update.callback_query
         await query.answer()
         chat_id = query.message.chat_id
@@ -51,14 +51,13 @@ async def send_page(update, page):
 
 # ✅ Callback handler
 async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    data = query.data
+    data = update.callback_query.data
     if data == "page_1":
-        await send_page(update, 1)
+        await send_page(update, context, 1)
     elif data == "page_2":
-        await send_page(update, 2)
+        await send_page(update, context, 2)
     else:
-        await query.answer("🚧 এই ফিচারটি এখনো তৈরি হচ্ছে!")
+        await update.callback_query.answer("🚧 এই ফিচারটি এখনো তৈরি হচ্ছে!")
 
 # ✅ বট রান কনফিগার
 app = ApplicationBuilder().token(os.environ.get("BOT_TOKEN")).build()
