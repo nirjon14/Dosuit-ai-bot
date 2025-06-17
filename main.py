@@ -2,7 +2,8 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 import os
 from dotenv import load_dotenv
-load_dotenv()
+
+load_dotenv()  # Load .env file
 
 # ✅ /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -66,8 +67,12 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.callback_query.answer("🚧 ফিচারটি এখনো তৈরি হচ্ছে!")
 
 # ✅ Bot Run
-app = ApplicationBuilder().token(os.environ.get("BOT_TOKEN")).build()
-app.add_handler(CommandHandler("start", start))
-app.add_handler(CommandHandler("menu", menu))
-app.add_handler(CallbackQueryHandler(handle_callback))
-app.run_polling()
+token = os.environ.get("BOT_TOKEN")
+if not token:
+    print("❌ টোকেন পাওয়া যায়নি! দয়া করে .env ফাইলে BOT_TOKEN=... সঠিকভাবে সেট করুন।")
+else:
+    app = ApplicationBuilder().token(token).build()
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("menu", menu))
+    app.add_handler(CallbackQueryHandler(handle_callback))
+    app.run_polling()
