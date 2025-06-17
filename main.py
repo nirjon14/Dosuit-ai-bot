@@ -1,6 +1,8 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # ✅ /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
